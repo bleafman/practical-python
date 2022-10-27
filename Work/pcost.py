@@ -2,6 +2,8 @@
 #
 # Exercise 1.27
 from os.path import exists
+import csv
+import sys
 
 
 def portfolio_cost(filename):
@@ -12,10 +14,12 @@ def portfolio_cost(filename):
     total_cost = 0
 
     with open(filename, 'rt') as file:
-        headers = next(file).split(',')
 
-        for line in file:
-            row = line.split(',')
+        rows = csv.reader(file)
+
+        headers = next(rows)
+
+        for row in rows:
 
             try:
                 shares = int(row[1])
@@ -30,5 +34,10 @@ def portfolio_cost(filename):
     return total_cost
 
 
-cost = portfolio_cost('Data/portfolio.csv')
+if len(sys.argv) == 2:
+    filename = sys.argv[1]
+else:
+    filename = 'Data/portfolio.csv'
+
+cost = portfolio_cost(filename)
 print('Total Cost:', cost)

@@ -21,3 +21,19 @@ def read_portfolio(filename):
             portfolio.append(holding)
 
     return portfolio
+
+
+def read_prices(filename):
+
+    prices = {}
+
+    with open(filename, 'rt') as file:
+        rows = csv.reader(file)
+
+        for row in rows:
+            if len(row) >= 2:
+                stock = row[0]
+                price = float(row[1])
+                prices[stock] = price
+
+    return prices

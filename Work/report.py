@@ -3,51 +3,27 @@
 # Exercise 2.4
 import csv
 from operator import itemgetter
+import fileparse
 
 
 def read_portfolio(filename):
-    portfolio = []
 
-    with open(filename, 'rt') as file:
-        rows = csv.reader(file)
-
-        headers = next(rows)
-
-        for row in rows:
-            holding = {
-                'name': row[0],
-                'shares': int(row[1]),
-                'price': float(row[2])
-            }
-            portfolio.append(holding)
-
-    return portfolio
+    return fileparse.parse_csv(filename, select=['name', 'shares', 'price'], types=[str, int, float])
 
 
 def read_prices(filename):
-
-    prices = {}
-
-    with open(filename, 'rt') as file:
-        rows = csv.reader(file)
-
-        for row in rows:
-            if len(row) >= 2:
-                stock = row[0]
-                price = float(row[1])
-                prices[stock] = price
-
-    return prices
-
+    return fileparse.parse_csv(filename, types=[str, float], has_headers=False)
 
 def make_report(portfolio, prices):
 
     report = []
 
+    prices_dict = dict(prices)
+
     for holding in portfolio:
 
         name, shares, price = itemgetter('name', 'shares', 'price')(holding)
-        current_price = prices.get(name)
+        current_price = prices_dict.get(name)
 
         change = current_price - price
 

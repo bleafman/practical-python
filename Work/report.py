@@ -7,12 +7,12 @@ import fileparse
 
 
 def read_portfolio(filename):
-
-    return fileparse.parse_csv(filename, select=['name', 'shares', 'price'], types=[str, int, float])
-
+    with open(filename) as file:
+        return fileparse.parse_file(file, select=['name', 'shares', 'price'], types=[str, int, float])
 
 def read_prices(filename):
-    return fileparse.parse_csv(filename, types=[str, float], has_headers=False)
+    with open(filename) as file:
+        return fileparse.parse_file(file, types=[str, float], has_headers=False)
 
 def make_report(portfolio, prices):
 
@@ -34,7 +34,7 @@ def make_report(portfolio, prices):
     return report
 
 
-def print_report(report=make_report(read_portfolio('Data/portfolio.csv'), read_prices('Data/prices.csv'))):
+def print_report(report):
 
     headers = ('Name', 'Shares', 'Price', 'Change')
 
@@ -78,6 +78,7 @@ def main(argv):
 
     portfolio = read_portfolio(argv[1])
     prices = read_prices(argv[2])
+
     report = make_report(portfolio, prices)
     print_report(report)
 

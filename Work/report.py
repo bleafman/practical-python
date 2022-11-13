@@ -71,3 +71,16 @@ def current_value(portfolio, prices):
         total_value += prices[holding['name']] * holding['shares']
 
     return total_value
+
+def main(argv):
+    if len(sys.argv) != 3:
+        raise SystemExit(f'Usage: {sys.argv[0]} ' 'portfoliofile pricefile')
+
+    portfolio = read_portfolio(argv[1])
+    prices = read_prices(argv[2])
+    report = make_report(portfolio, prices)
+    print_report(report)
+
+if __name__ == '__main__':
+    import sys
+    main(sys.argv)
